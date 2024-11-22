@@ -6,7 +6,7 @@ import os
 
 auth_bp = Blueprint("auth", __name__)
 
-SECRET_KEY = os.getenv("JWT_SECRET_KEY", "your-jwt-secret-key")
+SECRET_KEY = os.getenv("JWT_SECRET_KEY")
 ALGORITHM = "HS256"
 
 def token_required(f):
@@ -21,7 +21,7 @@ def token_required(f):
         try:
             decoded_token = jwt.decode(
                 token, SECRET_KEY, algorithms=[ALGORITHM])
-            current_user_id = decoded_token["sub"]  # Use the "sub" claim
+            current_user_id = decoded_token["sub"]  
             current_user_role = decoded_token["role"]
         except jwt.ExpiredSignatureError:
             return jsonify({"message": "Token has expired"}), 401
